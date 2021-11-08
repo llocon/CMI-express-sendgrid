@@ -11,10 +11,13 @@ const port = process.env.PORT || 3000
 app.use(express.json({ limit: '500kb' }))
 
 app.post("/api/email", (req, res) => {
-  const { name, lastname, email, date, config } = req.body;
+  const { name, lastname, email, config } = req.body;
 
   const msg = {
-    from: process.env.EMAIL_FROM_CMI, // Change to your verified sender
+    from: {
+      name: "Luis from Cognits",
+      email: process.env.EMAIL_FROM_CMI
+    }, // Change to your verified sender
     personalizations: [
       {
         to: [email],
