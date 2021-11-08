@@ -10,14 +10,14 @@ const port = process.env.PORT || 3000
 
 app.use(express.json({ limit: '500kb' }))
 
-app.post("/api/email", (req, res) => {
+app.post("/api/email", async (req, res) => {
   const { name, lastname, email, config } = req.body;
 
   const msg = {
     from: {
       name: "Luis from Cognits",
       email: process.env.EMAIL_FROM_CMI
-    }, // Change to your verified sender
+    },
     personalizations: [
       {
         to: [email],
@@ -30,19 +30,15 @@ app.post("/api/email", (req, res) => {
     subject: 'CMI - Request Recap',
     "template_id": process.env.SENDGRID_TEMPLATE_ID
   }
-
-  sgMail
-  .send(msg)
-  .then((response) => {
+  try {
+    let response = await sgMail.send(msg);
     res.send({ Status:  response[0].statusCode })
-  })
-  .catch((error) => {
+  } catch (error) {
     res.send({ message: error })
-  })
-
+  }
   
 })
 
 app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`)
+  console.log(`Example app listening at http://<url>:${port}`)
 })
