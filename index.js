@@ -15,9 +15,27 @@ app.use(express.json({ limit: '500kb' }))
 app.post("/api/email", cors(), async (req, res) => {
   const { name, lastname, email, config } = req.body;
 
-  const msg = {
+  const msg = [{ // Internal Email to CMI
     from: {
-      name: "Luis from Cognits",
+      name: "Corrugated Metals, Inc",
+      email: process.env.EMAIL_FROM_CMI
+    },
+    personalizations: [
+      {
+        to: [email],
+        dynamic_template_data: {
+          name: `${name} ${lastname}`,
+          ...req.body,
+          ...config,
+        }
+      }
+    ],
+    subject: 'CMI - Request Recap',
+    "template_id": "d-5a755a5959e94f259769521743c880c6"
+  },
+  { // Email to Client 
+    from: {
+      name: "Corrugated Metals, Inc",
       email: process.env.EMAIL_FROM_CMI
     },
     personalizations: [
@@ -31,7 +49,8 @@ app.post("/api/email", cors(), async (req, res) => {
     ],
     subject: 'CMI - Request Recap',
     "template_id": process.env.SENDGRID_TEMPLATE_ID
-  }
+  },
+]
   try {
     let response = await sgMail.send(msg);
     res.send({ Status:  response[0].statusCode })
