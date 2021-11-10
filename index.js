@@ -12,6 +12,13 @@ const port = process.env.PORT || 3000
 app.use(cors());
 app.use(express.json({ limit: '500kb' }))
 
+
+app.post("/api/healthcheck", (_, res) => {
+  res.status(200).send({
+    message: "API is online"
+  })
+})
+
 app.post("/api/email", cors(), async (req, res) => {
   const { name, lastname, email, config } = req.body;
 
@@ -31,7 +38,7 @@ app.post("/api/email", cors(), async (req, res) => {
       }
     ],
     subject: 'CMI - Request Recap',
-    "template_id": "d-5a755a5959e94f259769521743c880c6"
+    "template_id": process.env.SENDGRID_TEMPLATE_INTERNAL_ID || "d-5a755a5959e94f259769521743c880c6"
   },
   { // Email to Client 
     from: {
