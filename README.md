@@ -14,5 +14,6 @@ To run in development mode you need to run the following command:
 2. `npm run dev`
 
 To run in production mode you need to run the following command:
-1. `setup the ENV variables`
-2. `npm start`
+1. `setup the ENV variables or change .env-sample to .env`
+2. `Check the .env-sample for the variables to setup`
+3. `npm start`
