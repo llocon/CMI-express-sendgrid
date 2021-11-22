@@ -67,6 +67,35 @@ app.post("/api/email", cors(), async (req, res) => {
   
 })
 
+app.post("/api/snapshot/", cors(), async (req, res) => {
+  try {
+    const { assetId, layerConfiguration } = req.body;
+    var bear = process.env.THREEKIT_PRIVATE_TOKEN;
+    var org_id = process.env.THREEKIT_ORG_ID;
+    const obj_body = {
+      orgId: org_id,
+      configuration: layerConfiguration,
+      stageId: '',
+      stageConfiguration: {},
+      sync: true,
+      settings: { output: { resolution: { width: 512, height: 512 } } }
+    }
+    const response = await fetch(`https://preview.threekit.com/api/asset-jobs/${assetId}/render/webgl/image`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        "authorization": "Bearer " + bear
+      },
+      body: JSON.stringify(obj_body) // body data type must match "Content-Type" header
+    });
+    const obj = await response.json()
+    const file = obj.job.runs[0].results.files[0].id;
+    res.send({ file_id: "https://preview.threekit.com/api/files/" + file + "/content" });
+  } catch (e) {
+    res.send({ message: e })
+  }
+})
+
 app.listen(port, () => {
   console.log(`Example app listening at http://<url>:${port}`)
 })
