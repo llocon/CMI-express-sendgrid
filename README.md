@@ -7,6 +7,9 @@ First you need to configure ENV files
 EMAIL_FROM_CMI=<An email configured as a sender in Sendgrid>
 SENDGRID_API_KEY=<An ApiKey from Sendgrid>
 SENDGRID_TEMPLATE_ID=<Template for the Email that are we send it>
+THREEKIT_PRIVATE_TOKEN=<Threekit private token>
+THREEKIT_ENV=http://preview.threekit.com/
+THREEKIT_ORG_ID=<Org Id from threekit>
 ```
 
 To run in development mode you need to run the following command:
