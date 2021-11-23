@@ -98,8 +98,7 @@ app.post("/api/snapshot", cors(), async (req, res) => {
      const file = obj.job.runs[0].results.files[0].id;
     res.send({ file_id: `${process.env.THREEKIT_ENV}api/files/` + file + `/content` });
   } catch (e) {
-    res.send({ errorMessage: e })
-    console.log(e);
+    res.send({ errorMessage: e , bearer: bear, url: `${process.env.THREEKIT_ENV}api/asset-jobs/${assetId}/render/webgl/image`})
   }
 })
 
