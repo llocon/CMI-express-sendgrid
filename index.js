@@ -9,6 +9,7 @@ sgMail.setApiKey(process.env.SENDGRID_API_KEY)
 const app = express();
 const port = process.env.PORT || 3000
 
+
 app.use(cors());
 app.use(express.json({ limit: '500kb' }))
 
@@ -67,11 +68,13 @@ app.post("/api/email", cors(), async (req, res) => {
   
 })
 
-app.post("/api/snapshot/", cors(), async (req, res) => {
+app.post("/api/snapshot", cors(), async (req, res) => {
   try {
+    const fetch = require('node-fetch');
     const { assetId, layerConfiguration } = req.body;
     var bear = process.env.THREEKIT_PRIVATE_TOKEN;
     var org_id = process.env.THREEKIT_ORG_ID;
+
     const obj_body = {
       orgId: org_id,
       configuration: layerConfiguration,
@@ -88,11 +91,11 @@ app.post("/api/snapshot/", cors(), async (req, res) => {
       },
       body: JSON.stringify(obj_body) // body data type must match "Content-Type" header
     });
-    const obj = await response.json()
-    const file = obj.job.runs[0].results.files[0].id;
+     const obj = await response.json()
+     const file = obj.job.runs[0].results.files[0].id;
     res.send({ file_id: "https://preview.threekit.com/api/files/" + file + "/content" });
   } catch (e) {
-    res.send({ message: e })
+    res.send({ errorMessage: e })
   }
 })
 
