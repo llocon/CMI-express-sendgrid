@@ -73,6 +73,7 @@ app.post("/api/email", cors(), async (req, res) => {
 
 app.post("/api/snapshot", cors(), async (req, res) => {
   const { assetId, layerConfiguration } = req.body;
+  var x = "-1";
   try {
 
    
@@ -96,11 +97,13 @@ app.post("/api/snapshot", cors(), async (req, res) => {
       },
       body: JSON.stringify(obj_body) // body data type must match "Content-Type" header
     });
+    
      const obj = await response.json()
+     x = obj;
      const file = obj.job.runs[0].results.files[0].id;
     res.send({ file_id: `https://preview.threekit.com/api/files/` + file + `/content` });
   } catch (e) {
-    res.send({ errorMessage: e , sts: 1,  bearer: process.env.THREEKIT_PRIVATE_TOKEN, url: `${process.env.THREEKIT_ENV}api/asset-jobs/${assetId}/render/webgl/image`})
+    res.send({ errorMessage: e , sts: obj,  bearer: process.env.THREEKIT_PRIVATE_TOKEN, url: `${process.env.THREEKIT_ENV}api/asset-jobs/${assetId}/render/webgl/image`})
   }
 })
 
