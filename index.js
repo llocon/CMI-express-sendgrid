@@ -77,7 +77,8 @@ app.post("/api/snapshot", cors(), async (req, res) => {
   try {
 
    
-    var bear = process.env.THREEKIT_PRIVATE_TOKEN;
+    // var bear = process.env.THREEKIT_PRIVATE_TOKEN;
+    var bear = "fc88bff2-c253-442d-8a08-c3907469e57c";
     var org_id = process.env.THREEKIT_ORG_ID;
 
     const obj_body = {
