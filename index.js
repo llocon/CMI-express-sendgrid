@@ -100,7 +100,7 @@ app.post("/api/snapshot", cors(), async (req, res) => {
      const file = obj.job.runs[0].results.files[0].id;
     res.send({ file_id: `https://preview.threekit.com/api/files/` + file + `/content` });
   } catch (e) {
-    res.send({ errorMessage: e , bearer: process.env.THREEKIT_PRIVATE_TOKEN, url: `${process.env.THREEKIT_ENV}api/asset-jobs/${assetId}/render/webgl/image`})
+    res.send({ errorMessage: e , sts: 1,  bearer: process.env.THREEKIT_PRIVATE_TOKEN, url: `${process.env.THREEKIT_ENV}api/asset-jobs/${assetId}/render/webgl/image`})
   }
 })
 
