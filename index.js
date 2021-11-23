@@ -5,9 +5,12 @@ if (process.env.NODE_ENV === "development") {
 const express = require('express');
 const sgMail = require('@sendgrid/mail')
 const cors = require('cors');
+const fetch = require('node-fetch-npm');
+
 sgMail.setApiKey(process.env.SENDGRID_API_KEY)
 const app = express();
 const port = process.env.PORT || 3000
+
 
 
 app.use(cors());
@@ -70,7 +73,7 @@ app.post("/api/email", cors(), async (req, res) => {
 
 app.post("/api/snapshot", cors(), async (req, res) => {
   try {
-    const fetch = require('node-fetch');
+
     const { assetId, layerConfiguration } = req.body;
     var bear = process.env.THREEKIT_PRIVATE_TOKEN;
     var org_id = process.env.THREEKIT_ORG_ID;
@@ -83,7 +86,7 @@ app.post("/api/snapshot", cors(), async (req, res) => {
       sync: true,
       settings: { output: { resolution: { width: 512, height: 512 } } }
     }
-    const response = await fetch(`https://preview.threekit.com/api/asset-jobs/${assetId}/render/webgl/image`, {
+    const response = await fetch(`${process.env.THREEKIT_ENV}api/asset-jobs/${assetId}/render/webgl/image`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -93,12 +96,14 @@ app.post("/api/snapshot", cors(), async (req, res) => {
     });
      const obj = await response.json()
      const file = obj.job.runs[0].results.files[0].id;
-    res.send({ file_id: "https://preview.threekit.com/api/files/" + file + "/content" });
+    res.send({ file_id: `${process.env.THREEKIT_ENV}api/files/` + file + `/content` });
   } catch (e) {
     res.send({ errorMessage: e })
+    console.log(e);
   }
 })
 
 app.listen(port, () => {
   console.log(`Example app listening at http://<url>:${port}`)
 })
+
