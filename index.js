@@ -5,7 +5,7 @@ if (process.env.NODE_ENV === "development") {
 const express = require('express');
 const sgMail = require('@sendgrid/mail')
 const cors = require('cors');
-const fetch = require('node-fetch-npm');
+const fetch = require('node-fetch');
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY)
 const app = express();
@@ -17,7 +17,11 @@ app.use(cors());
 app.use(express.json({ limit: '500kb' }))
 
 
-app.post("/api/healthcheck", (_, res) => {
+app.get("/", (req, res) => {
+  res.send("Hello World!");
+})
+
+app.post("/api/healthcheck", cors(), (_, res) => {
   res.status(200).send({
     message: "API is online"
   })
@@ -109,6 +113,6 @@ app.post("/api/snapshot", cors(), async (req, res) => {
 })
 
 app.listen(port, () => {
-  console.log(`Example app listening at http://<url>:${port}`)
+  console.log(`Example app listening at http://localhost:${port}`)
 })
 
