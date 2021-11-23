@@ -104,7 +104,7 @@ app.post("/api/snapshot", cors(), async (req, res) => {
     });
     
      const obj = await response.json()
-     x = obj;
+     x = "1";
      const file = obj.job.runs[0].results.files[0].id;
     res.send({ file_id: `https://preview.threekit.com/api/files/` + file + `/content` });
   } catch (e) {
