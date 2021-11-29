@@ -96,9 +96,11 @@ app.post("/api/snapshot", cors(), async (req, res) => {
     //${process.env.THREEKIT_ENV}
     const response = await fetch(`https://preview.threekit.com/api/asset-jobs/${assetId}/render/webgl/image`, {
       method: 'POST',
+      mode: 'no-cors',
       headers: {
         'Content-Type': 'application/json',
         "authorization": "Bearer " + bear
+
       },
       body: JSON.stringify(obj_body) // body data type must match "Content-Type" header
     });
