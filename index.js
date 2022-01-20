@@ -38,7 +38,7 @@ app.post('/api/email', cors(), async (req, res) => {
       },
       personalizations: [
         {
-          to: [email],
+          to: process.env.EMAIL_FROM_CMI_INTERNAL,
           dynamic_template_data: {
             name: `${name} ${lastname}`,
             ...req.body,
@@ -67,7 +67,8 @@ app.post('/api/email', cors(), async (req, res) => {
         },
       ],
       subject: 'CMI - Request Recap',
-      template_id: process.env.SENDGRID_TEMPLATE_ID,
+      template_id: process.env.SENDGRID_TEMPLATE_ID || 
+      'd-97c6ca218ae5465d97dd7dde6071f19c',
     },
   ];
   try {
