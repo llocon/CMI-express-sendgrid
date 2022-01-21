@@ -28,6 +28,11 @@ app.post('/api/healthcheck', cors(), (_, res) => {
 
 app.post('/api/email', cors(), async (req, res) => {
   const { name, lastname, email, config } = req.body;
+  console.log(process.env.EMAIL_FROM_CMI_INTERNAL);
+  let arr = [];
+  if(process.env.EMAIL_FROM_CMI_INTERNAL) {
+    arr = process.env.EMAIL_FROM_CMI_INTERNAL.split(',');
+  }
 
   const msg = [
     {
@@ -38,7 +43,7 @@ app.post('/api/email', cors(), async (req, res) => {
       },
       personalizations: [
         {
-          to: process.env.EMAIL_FROM_CMI_INTERNAL,
+          to: arr || ["k.carlton@corrugated-metals.com"],
           dynamic_template_data: {
             name: `${name} ${lastname}`,
             ...req.body,
